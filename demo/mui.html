@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MUI Demo - Vanilla Modals</title>
+        <link rel="stylesheet" href="../dist/vanilla-modals.css" />
+        <style>
+            body {
+                margin: 0;
+                font-family: Roboto, Arial, sans-serif;
+                background: #f5f5f5;
+            }
+
+            .page {
+                max-width: 52rem;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+            }
+
+            .panel {
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                padding: 1rem 1.25rem;
+            }
+
+            .MuiModal-root {
+                background: rgba(0, 0, 0, 0.5);
+            }
+
+            .MuiPaper-root.MuiDialog-paper {
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+                border: 0;
+            }
+
+            .MuiDialogTitle-root {
+                padding: 16px 24px;
+                font-size: 1.125rem;
+                font-weight: 500;
+                flex: 1;
+            }
+
+            .MuiDialogTitleBar-root {
+                padding: 0;
+            }
+
+            .MuiDialogContent-root {
+                padding: 8px 24px 20px;
+                color: rgba(0, 0, 0, 0.75);
+            }
+
+            .MuiDialogActions-root {
+                padding: 8px 16px 16px;
+                display: flex;
+                justify-content: flex-end;
+                gap: 8px;
+            }
+
+            .MuiButton-root {
+                border: 0;
+                border-radius: 8px;
+                padding: 8px 14px;
+                cursor: pointer;
+                background: transparent;
+            }
+
+            .MuiButton-textPrimary {
+                color: #1976d2;
+            }
+
+            .mui-danger {
+                color: #fff;
+                background: #d32f2f;
+            }
+
+            .MuiIconButton-root {
+                border: 0;
+                background: transparent;
+                border-radius: 50%;
+                width: 32px;
+                height: 32px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="page">
+            <section class="panel">
+                <h1 style="margin: 0 0 12px">MUI-style Integration Demo</h1>
+                <p style="margin: 0 0 16px; color: #616161"> This demo uses <code>muiThemePlugin()</code> and lightweight CSS tokens compatible with MUI naming. </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <button id="show-custom" type="button">Open custom modal</button>
+                    <button id="show-alert" type="button">Open alert</button>
+                    <button id="show-confirm" type="button">Open confirm</button>
+                </div>
+                <p id="result" style="margin: 12px 0 0; color: #616161"></p>
+            </section>
+        </main>
+
+        <script src="../dist/vanilla-modals.min.js"></script>
+        <script>
+            const result = document.getElementById('result');
+
+            document.getElementById('show-custom').addEventListener('click', () => {
+                const modal = VanillaModals.createVanillaModal({
+                    title: 'Custom modal',
+                    message: 'This modal uses the behavior-only core with MUI class tokens.',
+                    buttons: [
+                        { id: 'dismiss', label: 'Dismiss' },
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            className: 'mui-danger',
+                            action: () => {
+                                result.textContent = 'Save action fired';
+                            }
+                        }
+                    ]
+                });
+
+                modal.use(VanillaModals.muiThemePlugin());
+                modal.open();
+            });
+
+            document.getElementById('show-alert').addEventListener('click', () => {
+                const modal = VanillaModals.alert('Record created', (ok) => {
+                    result.textContent = `Alert result: ${ok}`;
+                });
+
+                modal.use(VanillaModals.muiThemePlugin());
+            });
+
+            document.getElementById('show-confirm').addEventListener('click', () => {
+                const modal = VanillaModals.confirm(
+                    {
+                        message: 'Do you want to archive this?',
+                        okClassName: 'mui-danger'
+                    },
+                    (confirmed) => {
+                        result.textContent = `Confirm result: ${confirmed}`;
+                    }
+                );
+
+                modal.use(VanillaModals.muiThemePlugin());
+            });
+        </script>
+    </body>
+</html>

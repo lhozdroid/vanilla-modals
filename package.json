@@ -1,0 +1,78 @@
+{
+    "name": "vanilla-modals",
+    "version": "0.1.0",
+    "description": "Framework-agnostic modal utility in pure JavaScript.",
+    "homepage": "https://github.com/lhozdroid/vanilla-modals#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lhozdroid/vanilla-modals.git"
+    },
+    "bugs": {
+        "url": "https://github.com/lhozdroid/vanilla-modals/issues"
+    },
+    "type": "module",
+    "engines": {
+        "node": ">=18.18.0"
+    },
+    "main": "./dist/vanilla-modals.cjs",
+    "module": "./dist/vanilla-modals.js",
+    "types": "./dist/vanilla-modals.d.ts",
+    "unpkg": "./dist/vanilla-modals.min.js",
+    "jsdelivr": "./dist/vanilla-modals.min.js",
+    "exports": {
+        ".": {
+            "import": "./dist/vanilla-modals.js",
+            "require": "./dist/vanilla-modals.cjs"
+        },
+        "./styles": "./dist/vanilla-modals.css"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "sideEffects": [
+        "./dist/vanilla-modals.css"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "node scripts/build.mjs",
+        "dev": "node scripts/build.mjs --watch",
+        "test": "vitest run",
+        "test:unit": "vitest run",
+        "test:watch": "vitest",
+        "test:ci": "vitest run --reporter=default --reporter=junit --outputFile.junit=./coverage/junit.xml",
+        "coverage": "vitest run --coverage",
+        "coverage:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=./coverage/junit.xml",
+        "test:e2e": "playwright test",
+        "test:e2e:headed": "playwright test --headed",
+        "test:e2e:debug": "PWDEBUG=1 playwright test --headed --workers=1 --project=chromium",
+        "test:e2e:matrix": "PW_MATRIX=1 playwright test --workers=1",
+        "test:e2e:report": "playwright show-report",
+        "test:a11y": "playwright test tests/e2e/accessibility.spec.js",
+        "test:all": "npm run test && npm run test:e2e",
+        "release:verify": "node scripts/release-verify.mjs",
+        "prepublishOnly": "npm run build && npm run test && npm run test:e2e && npm run release:verify",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "keywords": [
+        "modal",
+        "dialog",
+        "vanilla-js",
+        "plugin"
+    ],
+    "author": "lhozdroid",
+    "license": "MIT",
+    "devDependencies": {
+        "@axe-core/playwright": "^4.10.2",
+        "@playwright/test": "^1.58.2",
+        "@vitest/coverage-v8": "^2.1.8",
+        "esbuild": "^0.25.0",
+        "jsdom": "^25.0.1",
+        "prettier": "^3.6.2",
+        "vitest": "^2.1.8"
+    }
+}

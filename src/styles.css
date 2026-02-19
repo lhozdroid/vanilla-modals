@@ -1,0 +1,58 @@
+.vm-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.vm-overlay.vm-open {
+    display: flex;
+}
+
+.vm-dialog {
+    width: min(100%, 40rem);
+    max-height: calc(100vh - 2rem);
+}
+
+.vm-content {
+    overflow: auto;
+    border: 1px solid currentColor;
+    background: Canvas;
+    color: CanvasText;
+}
+
+.vm-header,
+.vm-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.vm-title {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.vm-close {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    font: inherit;
+    line-height: 1;
+}
+
+.vm-body {
+    padding: 1rem;
+}
+
+.vm-footer {
+    justify-content: flex-end;
+}
+
+.vm-button {
+    cursor: pointer;
+}

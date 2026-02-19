@@ -1,0 +1,46 @@
+name: Publish
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+jobs:
+    publish-npm:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: https://registry.npmjs.org
+                  cache: npm
+
+            - name: Install
+              run: npm ci
+
+            - name: Build
+              run: npm run build
+
+            - name: Unit Tests
+              run: npm test
+
+            - name: Install Playwright Chromium
+              run: npx playwright install --with-deps chromium
+
+            - name: E2E
+              run: npm run test:e2e
+
+            - name: Release Verify
+              run: npm run release:verify
+
+            - name: Publish
+              run: npm publish --provenance
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

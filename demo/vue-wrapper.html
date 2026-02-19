@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue Wrapper - Vanilla Modals</title>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="../dist/vanilla-modals.min.js"></script>
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <script>
+            const { createApp, ref, onUnmounted } = Vue;
+
+            createApp({
+                setup() {
+                    const result = ref('');
+                    const created = ref([]);
+
+                    onUnmounted(() => {
+                        for (const modal of created.value) {
+                            modal.destroy();
+                        }
+
+                        created.value = [];
+                    });
+
+                    const openCustom = () => {
+                        const modal = VanillaModals.createVanillaModal({
+                            title: 'Custom modal',
+                            message: 'This modal uses the behavior-only core from a Vue wrapper demo.',
+                            buttons: [
+                                { id: 'dismiss', label: 'Dismiss' },
+                                {
+                                    id: 'save',
+                                    label: 'Save',
+                                    action: () => {
+                                        result.value = 'Save action fired';
+                                    }
+                                }
+                            ]
+                        });
+
+                        created.value.push(modal);
+                        modal.open();
+                    };
+
+                    const openAlert = () => {
+                        const modal = VanillaModals.alert('Record created', (ok) => {
+                            result.value = `Alert result: ${ok}`;
+                        });
+
+                        created.value.push(modal);
+                    };
+
+                    const openConfirm = () => {
+                        const modal = VanillaModals.confirm('Do you want to archive this?', (confirmed) => {
+                            result.value = `Confirm result: ${confirmed}`;
+                        });
+
+                        created.value.push(modal);
+                    };
+
+                    return {
+                        result,
+                        openCustom,
+                        openAlert,
+                        openConfirm
+                    };
+                },
+                template: `
+          <main>
+            <h1>Vue Wrapper Demo</h1>
+            <p>This demo mirrors vanilla controls through Vue handlers.</p>
+            <button @click="openCustom">Open custom modal</button>
+            <button @click="openAlert">Open alert</button>
+            <button @click="openConfirm">Open confirm</button>
+            <p>{{ result }}</p>
+          </main>
+        `
+            }).mount('#app');
+        </script>
+    </body>
+</html>

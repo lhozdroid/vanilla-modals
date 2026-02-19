@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vanilla Modals Demo</title>
+        <link rel="stylesheet" href="../dist/vanilla-modals.css" />
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 2rem;
+            }
+
+            .panel {
+                max-width: 48rem;
+                margin: 0 auto;
+                border: 1px solid #ddd;
+                padding: 1rem;
+            }
+
+            .actions {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+        </style>
+    </head>
+    <body>
+        <main class="panel">
+            <h1>Vanilla Modals</h1>
+            <p>Pure JavaScript modal utility without framework dependency.</p>
+            <div class="actions">
+                <button id="show-custom" type="button">Open custom modal</button>
+                <button id="show-alert" type="button">Open alert</button>
+                <button id="show-confirm" type="button">Open confirm</button>
+            </div>
+            <p id="result"></p>
+        </main>
+
+        <script src="../dist/vanilla-modals.min.js"></script>
+        <script>
+            const result = document.getElementById('result');
+
+            document.getElementById('show-custom').addEventListener('click', () => {
+                VanillaModals.show({
+                    title: 'Custom modal',
+                    message: 'This modal uses the behavior-only core.',
+                    buttons: [
+                        { id: 'dismiss', label: 'Dismiss' },
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            action: () => {
+                                result.textContent = 'Save action fired';
+                            }
+                        }
+                    ]
+                });
+            });
+
+            document.getElementById('show-alert').addEventListener('click', () => {
+                VanillaModals.alert('Record created', (ok) => {
+                    result.textContent = `Alert result: ${ok}`;
+                });
+            });
+
+            document.getElementById('show-confirm').addEventListener('click', () => {
+                VanillaModals.confirm('Do you want to archive this?', (confirmed) => {
+                    result.textContent = `Confirm result: ${confirmed}`;
+                });
+            });
+        </script>
+    </body>
+</html>

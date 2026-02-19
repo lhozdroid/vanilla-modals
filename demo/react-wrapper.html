@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>React Wrapper - Vanilla Modals</title>
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="../dist/vanilla-modals.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useEffect, useRef, useState } = React;
+
+            function App() {
+                const [result, setResult] = useState('');
+                const createdRef = useRef([]);
+
+                useEffect(() => {
+                    return () => {
+                        for (const modal of createdRef.current) {
+                            modal.destroy();
+                        }
+
+                        createdRef.current = [];
+                    };
+                }, []);
+
+                const openCustom = () => {
+                    const modal = VanillaModals.createVanillaModal({
+                        title: 'Custom modal',
+                        message: 'This modal uses the behavior-only core from a React wrapper demo.',
+                        buttons: [
+                            { id: 'dismiss', label: 'Dismiss' },
+                            {
+                                id: 'save',
+                                label: 'Save',
+                                action: () => {
+                                    setResult('Save action fired');
+                                }
+                            }
+                        ]
+                    });
+
+                    createdRef.current.push(modal);
+                    modal.open();
+                };
+
+                const openAlert = () => {
+                    const modal = VanillaModals.alert('Record created', (ok) => {
+                        setResult(`Alert result: ${ok}`);
+                    });
+
+                    createdRef.current.push(modal);
+                };
+
+                const openConfirm = () => {
+                    const modal = VanillaModals.confirm('Do you want to archive this?', (confirmed) => {
+                        setResult(`Confirm result: ${confirmed}`);
+                    });
+
+                    createdRef.current.push(modal);
+                };
+
+                return (
+                    <main>
+                        <h1>React Wrapper Demo</h1>
+                        <p>This demo mirrors vanilla controls through React handlers.</p>
+                        <button onClick={openCustom}>Open custom modal</button>
+                        <button onClick={openAlert}>Open alert</button>
+                        <button onClick={openConfirm}>Open confirm</button>
+                        <p>{result}</p>
+                    </main>
+                );
+            }
+
+            ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+        </script>
+    </body>
+</html>

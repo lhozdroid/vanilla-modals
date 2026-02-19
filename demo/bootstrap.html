@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bootstrap Demo - Vanilla Modals</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../dist/vanilla-modals.css" />
+        <style>
+            .vm-overlay.modal {
+                background: rgba(0, 0, 0, 0.45);
+            }
+        </style>
+    </head>
+    <body class="bg-light">
+        <main class="container py-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="h4 mb-3">Bootstrap Integration Demo</h1>
+                    <p class="text-secondary mb-4">This demo mirrors the vanilla demo controls while using <code>bootstrapThemePlugin()</code>.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button id="show-custom" class="btn btn-primary" type="button"> Open custom modal </button>
+                        <button id="show-alert" class="btn btn-outline-secondary" type="button"> Open alert </button>
+                        <button id="show-confirm" class="btn btn-outline-secondary" type="button"> Open confirm </button>
+                    </div>
+                    <p id="result" class="small text-secondary mt-3 mb-0"></p>
+                </div>
+            </div>
+        </main>
+
+        <script src="../dist/vanilla-modals.min.js"></script>
+        <script>
+            const result = document.getElementById('result');
+
+            document.getElementById('show-custom').addEventListener('click', () => {
+                const modal = VanillaModals.createVanillaModal({
+                    title: 'Custom modal',
+                    message: 'This modal uses the behavior-only core with Bootstrap classes.',
+                    buttons: [
+                        {
+                            id: 'dismiss',
+                            label: 'Dismiss',
+                            className: 'btn btn-outline-secondary'
+                        },
+                        {
+                            id: 'save',
+                            label: 'Save',
+                            className: 'btn btn-primary',
+                            action: () => {
+                                result.textContent = 'Save action fired';
+                            }
+                        }
+                    ]
+                });
+
+                modal.use(VanillaModals.bootstrapThemePlugin());
+                modal.open();
+            });
+
+            document.getElementById('show-alert').addEventListener('click', () => {
+                const modal = VanillaModals.alert(
+                    {
+                        message: 'Record created',
+                        closable: true,
+                        closeByBackdrop: true,
+                        buttonClassName: 'btn btn-primary'
+                    },
+                    (ok) => {
+                        result.textContent = `Alert result: ${ok}`;
+                    }
+                );
+
+                modal.use(VanillaModals.bootstrapThemePlugin());
+            });
+
+            document.getElementById('show-confirm').addEventListener('click', () => {
+                const modal = VanillaModals.confirm(
+                    {
+                        message: 'Do you want to archive this?',
+                        cancelClassName: 'btn btn-outline-secondary',
+                        okClassName: 'btn btn-danger'
+                    },
+                    (confirmed) => {
+                        result.textContent = `Confirm result: ${confirmed}`;
+                    }
+                );
+
+                modal.use(VanillaModals.bootstrapThemePlugin());
+            });
+        </script>
+    </body>
+</html>
