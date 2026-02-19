@@ -2,6 +2,11 @@
 
 Framework-agnostic modal/dialog utility in pure JavaScript.
 
+[![CI](https://github.com/lhozdroid/vanilla-modals/actions/workflows/ci.yml/badge.svg)](https://github.com/lhozdroid/vanilla-modals/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/vanilla-modals.svg)](https://www.npmjs.com/package/vanilla-modals)
+[![npm downloads](https://img.shields.io/npm/dm/vanilla-modals.svg)](https://www.npmjs.com/package/vanilla-modals)
+[![GitHub Discussions](https://img.shields.io/github/discussions/lhozdroid/vanilla-modals)](https://github.com/lhozdroid/vanilla-modals/discussions)
+
 `vanilla-modals` keeps core behavior unstyled. Visual design belongs to framework integrations or custom CSS.
 Core internals are split into `ModalStateStore`, `ModalRenderer`, and `VanillaModal` orchestration.
 Lifecycle mutators are Promise-oriented and do not require `async/await`.
