@@ -1,6 +1,6 @@
 {
     "name": "vanilla-modals",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Framework-agnostic modal utility in pure JavaScript.",
     "homepage": "https://github.com/lhozdroid/vanilla-modals#readme",
     "repository": {
