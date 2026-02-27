@@ -102,6 +102,9 @@ function getModal(id) {
 function getModals() {
   return [...registry.values()];
 }
+function getOpenedModals() {
+  return [...opened];
+}
 function setOpened(modal, isOpen) {
   const currentIndex = opened.indexOf(modal);
   if (isOpen && currentIndex < 0) {
@@ -809,6 +812,7 @@ var VanillaModal = class {
     });
     this.boundOnKeydown = (event) => {
       if (!this.store.isOpened()) return;
+      if (!this.isTopOpenedModal()) return;
       if (event.key === "Escape" && this.store.getOption("closeByKeyboard") && this.store.getOption("closable")) {
         event.preventDefault();
         this.close("keyboard").then(() => {
@@ -821,6 +825,15 @@ var VanillaModal = class {
     };
     registerModal(this);
     this.emitEvent("init", { instance: this });
+  }
+  /**
+   * Returns whether this modal is the top opened layer.
+   *
+   * @returns {boolean}
+   */
+  isTopOpenedModal() {
+    const opened2 = getOpenedModals();
+    return opened2.length > 0 && opened2[opened2.length - 1] === this;
   }
   /**
    * Returns modal identifier.

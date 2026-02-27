@@ -1,4 +1,4 @@
-import { bringToFront, getLayerZIndex, registerModal, setOpened, unregisterModal } from './modal-manager.js';
+import { bringToFront, getLayerZIndex, getOpenedModals, registerModal, setOpened, unregisterModal } from './modal-manager.js';
 import { ModalRenderer } from './modal-renderer.js';
 import { ModalStateStore } from './modal-state-store.js';
 import { EventEmitter } from '../utils/event-emitter.js';
@@ -90,6 +90,7 @@ export class VanillaModal {
          */
         this.boundOnKeydown = (event) => {
             if (!this.store.isOpened()) return;
+            if (!this.isTopOpenedModal()) return;
 
             if (event.key === 'Escape' && this.store.getOption('closeByKeyboard') && this.store.getOption('closable')) {
                 event.preventDefault();
@@ -104,6 +105,16 @@ export class VanillaModal {
 
         registerModal(this);
         this.emitEvent('init', { instance: this });
+    }
+
+    /**
+     * Returns whether this modal is the top opened layer.
+     *
+     * @returns {boolean}
+     */
+    isTopOpenedModal() {
+        const opened = getOpenedModals();
+        return opened.length > 0 && opened[opened.length - 1] === this;
     }
 
     /**

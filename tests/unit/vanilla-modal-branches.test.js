@@ -301,6 +301,47 @@ describe('VanillaModal branches', () => {
         expect(document.activeElement).toBe(first);
     });
 
+    it('handles keyboard close only on the top opened modal', () => {
+        const first = new VanillaModal({ id: 'first' });
+        const second = new VanillaModal({ id: 'second' });
+
+        first.open();
+        second.open();
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+        expect(second.isOpen()).toBe(false);
+        expect(first.isOpen()).toBe(true);
+    });
+
+    it('applies tab trapping only on the top opened modal', () => {
+        const first = new VanillaModal({
+            id: 'first',
+            buttons: [
+                { id: 'fa', label: 'FA' },
+                { id: 'fb', label: 'FB' }
+            ]
+        });
+        const second = new VanillaModal({
+            id: 'second',
+            buttons: [
+                { id: 'sa', label: 'SA' },
+                { id: 'sb', label: 'SB' }
+            ]
+        });
+
+        first.open();
+        second.open();
+
+        const secondFocusables = second.getFocusableElements();
+        const secondFirst = secondFocusables[0];
+        const secondLast = secondFocusables[secondFocusables.length - 1];
+
+        secondLast.focus();
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+        expect(document.activeElement).toBe(secondFirst);
+    });
+
     it('filters disabled focusable nodes', () => {
         const modal = new VanillaModal({
             buttons: [{ id: 'a', label: 'A' }]

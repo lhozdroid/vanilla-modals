@@ -97,6 +97,8 @@ const modal = show({
 - `title:change`
 - `message:change`
 - `buttons:change`
+- `closebutton:change`
+- `closebybackdrop:change`
 - `data:change`
 - `error`
 
